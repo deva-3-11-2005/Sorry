@@ -1,0 +1,130 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fireworks Celebration</title>
+    <style>
+        body {
+            background-color: black;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        h1 {
+            font-size: 50px;
+            color: gold;
+            text-shadow: 2px 2px 10px rgba(255, 215, 0, 0.8);
+            position: absolute;
+            opacity: 0;  /* Initially hidden */
+            transition: opacity 2s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="fireworksCanvas"></canvas>
+    <h1 id="thankYouMessage">😊 Thank You! 
+      <br> 🥰 My dear<br>best friend😇  
+      <br>    🤗 smiley girl🤗
+    </h1>
+
+    <script>
+        const canvas = document.getElementById("fireworksCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Firework {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.particles = [];
+                for (let i = 0; i < 50; i++) {
+                    this.particles.push(new Particle(this.x, this.y, this.color));
+                }
+            }
+            update() {
+                this.particles.forEach(particle => particle.update());
+            }
+            draw() {
+                this.particles.forEach(particle => particle.draw());
+            }
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.speed = Math.random() * 5 + 2;
+                this.angle = Math.random() * 2 * Math.PI;
+                this.vx = Math.cos(this.angle) * this.speed;
+                this.vy = Math.sin(this.angle) * this.speed;
+                this.alpha = 1;
+                this.size = Math.random() * 3 + 2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= 0.02;
+            }
+            draw() {
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        let fireworks = [];
+
+        function createFirework() {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height / 2;
+            const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            fireworks.push(new Firework(x, y, color));
+        }
+
+        function animate() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            fireworks.forEach((firework, index) => {
+                firework.update();
+                firework.draw();
+                if (firework.particles[0].alpha <= 0) {
+                    fireworks.splice(index, 1);
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        setInterval(createFirework, 1000);
+        animate();
+
+        // Show "Thank You!" message after 5 seconds
+        setTimeout(() => {
+            const thankYouMessage = document.getElementById("thankYouMessage");
+            thankYouMessage.style.opacity = "1";  // Make the text visible
+        }, 3000);
+    </script>
+
+</body>
+</html>

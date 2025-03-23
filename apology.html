@@ -1,0 +1,86 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apology Page</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            flex-direction: column;
+        }
+        h1 {
+            font-size: 40px;
+            color: gold;
+        }
+        p {
+            font-size: 20px;
+            max-width: 80%;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .forgive {
+            background-color: green;
+            color: white;
+        }
+        .reject {
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="message">I'm really sorry! Will you forgive me? 🙏</h1>
+
+    <div class="buttons">
+        <button class="forgive" onclick="window.location.href='thanks.html'">Forgive</button>
+        <button class="reject" onclick="rejectApology()">Reject</button>
+    </div>
+
+    <script>
+        let rejectionCount = 0;
+        const rejectionMessages = [
+            "💔 You rejected my apology. I understand. 💔",
+            "😔 I was really hoping you'd forgive me...",
+            "💭 Maybe with time, you'll change your mind.",
+            "🥺 I'm truly sorry. Please reconsider...",
+            "😭 This really hurts, but I respect your choice.",
+            "💬 If you want to talk, I'm here anytime.",
+            "🌧️ I feel like it's raining in my heart now...",
+            "💡 If I could go back, I'd do things differently.",
+            "🕊️ No hard feelings. I still wish you the best.",
+            "🚪 I'll stop asking now. The door is always open."
+        ];
+
+        function rejectApology() {
+            if (rejectionCount < rejectionMessages.length) {
+                document.getElementById("message").innerHTML = rejectionMessages[rejectionCount];
+                rejectionCount++;
+            } 
+            if (rejectionCount === 10) {
+                setTimeout(() => {
+                    window.location.href = 'final-message.html'; // Redirects after 10th rejection
+                }, 1000); // 2-second delay before redirect
+            }
+        }
+    </script>
+
+</body>
+</html>
